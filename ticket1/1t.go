@@ -1,20 +1,18 @@
-package main
+package ticket1
 
 import (
 	"errors"
-	"fmt"
-	"log"
 )
 
 // Создайте структуру для следующей предметной области "Человек" с полями "Возраст", "Имя" и "Статус".
-type person struct {
+type Person struct {
 	age    int
 	name   string
 	status string
 }
 
-func NewPerson(age int, name string) (*person, error) {
-	person := &person{
+func NewPerson(age int, name string) (*Person, error) {
+	person := &Person{
 		name: name,
 	}
 	if err := person.SetAge(age); err != nil {
@@ -23,7 +21,7 @@ func NewPerson(age int, name string) (*person, error) {
 	return person, nil
 }
 
-func (p *person) SetAge(age int) error {
+func (p *Person) SetAge(age int) error {
 	switch {
 	// Установите ограничения для возраста от 0 до 150.
 	// Статус должен автоматически устанавливаться в зависимости от возраста и не иметь собственного сеттера.
@@ -58,7 +56,7 @@ func (p *person) SetAge(age int) error {
 }
 
 // Напишите метод для вычисления среднего возраста, который принимает срез структур в качестве входных данных и возвращает сумму возрастов.
-func averageAgeValue(srez []person) float64 {
+func AverageAgeValue(srez []Person) float64 {
 	if len(srez) == 0 {
 		return 0
 	}
@@ -71,7 +69,7 @@ func averageAgeValue(srez []person) float64 {
 }
 
 // Также реализуйте метод с именем tryAdd, который принимает указатель на срез структур и экземпляр структуры.
-func tryAdd(srez *[]person, newPers person) bool {
+func TryAdd(srez *[]Person, newPers Person) bool {
 	// Этот метод должен добавить структуру в срез и вернуть true, если структуры еще нет в срезе, иначе вернуть false.
 	for _, p := range *srez {
 		if p == newPers {
@@ -80,40 +78,4 @@ func tryAdd(srez *[]person, newPers person) bool {
 	}
 	*srez = append(*srez, newPers)
 	return true
-}
-
-func main() {
-	person1, err := NewPerson(
-		15,
-		"Константин",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	person2, err := NewPerson(
-		98,
-		"Макс",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	person3, err := NewPerson(
-		27,
-		"Дарья",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Создайте срез, содержащий несколько экземпляров этой структуры.
-	srez_of_persons := make([]person, 0)
-	tryAdd(&srez_of_persons, *person1)
-	tryAdd(&srez_of_persons, *person2)
-	tryAdd(&srez_of_persons, *person3)
-
-	fmt.Println(person1)
-	fmt.Println(srez_of_persons)
-	fmt.Println(averageAgeValue(srez_of_persons))
 }
